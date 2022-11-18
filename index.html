@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Api</title>
+  <style>
+    /* body {
+        margin: 0;
+        padding: 0;
+        background-color: lightslategray;
+      } */
+
+    body {
+      background-color: lighten(#398b93, 30%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .header {
+      background-color: darken(#398b93, 5%);
+      color: lightblue;
+      font-size: 1.5em;
+      padding: 1rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .table-users {
+      border: 1px solid darken(#398b93, 5%);
+      border-radius: 10px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      max-width: calc(100% - 2em);
+      margin: 1em auto;
+      overflow: hidden;
+      width: 800px;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    td,
+    th {
+      color: darken(#398b93, 10%);
+      padding: 10px;
+    }
+
+    td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    td:last-child {
+      font-size: 0.95em;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    th {
+      background-color: lighten(#398b93, 50%);
+      font-weight: 300;
+    }
+
+    tr:nth-child(2n) {
+      /* background-color: gainsboro; */
+    }
+
+    tr:nth-child(2n + 1) {
+      background-color: lighten(#398b93, 55%);
+    }
+
+    .apiImage {
+      width: 150px;
+    }
+
+    .card {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 100px;
+      margin-top: 50px;
+    }
+
+    .card-body {
+      width: 60%;
+      box-shadow: rgba(88, 87, 87, 0.56) 0px 22px 70px 4px;
+      display: flex;
+    }
+
+    .card-body img {
+      width: 200px;
+    }
+
+    .info {
+      margin-left: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card" id="card"></div>
+  <div class="table-users">
+    <div class="header">Products</div>
+
+    <table cellspacing="0">
+      <tr>
+        <th>Picture</th>
+        <th>ID</th>
+        <th width="230">Name</th>
+        <th>Price</th>
+        <th>Rating</th>
+      </tr>
+      <tbody id="page">
+        <tr>
+          <img src="" />
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  let box = document.getElementById("card");
+  let getImage = document.getElementById("page");
+  box.style.display = "none";
+  // let list = 0;
+  fetch("https://fakestoreapi.com/products")
+    .then((response) => response.json())
+    .then((result) => {
+      // console.log(result);
+      for (let i = 0; i < result.length; i++) {
+        page.innerHTML += `<tr onclick="detail(${result[i].id})">
+            <td>
+            <a href="${result[i].image}" target="_blank"><img class="apiImage" src="${result[i].image}">
+            </td>
+            <td>${result[i].id}</td>
+            <td>${result[i].title}</td>
+            <td>${result[i].price}$</td>
+            <td style="text-align:center">${result[i].rating.rate} </td>
+
+          </tr>`;
+      }
+      // page.innerHTML = list;
+    });
+
+  function detail(id) {
+    fetch("https://fakestoreapi.com/products/" + id)
+      .then((response) => response.json())
+      .then((data) => {
+        box.innerHTML = `
+          <div class="card-body">
+        <img src="${data.image}" alt="" />
+        <div class="info">
+          <h3>Name -   ${data.title}</h3>
+          <h4>Price  -   ${data.price}$</h4>
+          <h4>rating -   ${data.rating.rate}</h4>
+        </div>
+      </div>`;
+        box.style.display = "block";
+      });
+  }
+  // fetch("https://fakestoreapi.com/products")
+  //   .then((response) => {
+  //     console.log(response);
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+
+  // fetch("https://fakestoreapi.com/products")
+  //   .then((response) => {
+  //     return response.json();
+  //   })
+  //   .then((result) => {
+  //     console.log(result);
+  //   });
+
+  // fetch("https://fakestoreapi.com/products").then((res) => {
+  //   return res.json();
+  // }).then((result)=>{
+  //   console.log(result);
+  // })
+
+  // let callApi = async () => {
+  //   let response = await fetch("https://fakestoreapi.com/products");
+  //   let jsonResponse = await response.json();
+  //   console.log(jsonResponse);
+  // };
+  // callApi();
+
+  // let getApi = async () => {
+  //   let response = await fetch("https://fakestoreapi.com/products", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   let responseApi = await response.json();
+  //   console.log(responseApi);
+  // };
+  // getApi();
+
+  // let callApi = async () => {
+  //   let response = await fetch("https://fakestoreapi.com/products", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   let responseApi = await response.json();
+  //   console.log(responseApi);
+  // };
+  // callApi()
+
+</script>
+
+</html>
